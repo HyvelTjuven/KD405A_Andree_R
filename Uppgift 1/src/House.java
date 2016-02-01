@@ -1,5 +1,5 @@
 public class House {
-	private int yearBuilt;
+	private int yearBuilt = 0;
 	private int size;
 	private static int minSize = 10;
 	private static int maxSize = 1000;
@@ -7,7 +7,9 @@ public class House {
 	private static int maxYear = 2015;
 
 	public House(int yearBuilt, int size) {
+			
 		this.yearBuilt = yearBuilt;
+		
 		this.size = size;
 	}
 
