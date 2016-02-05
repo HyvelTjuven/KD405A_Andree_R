@@ -52,18 +52,21 @@ public class BikeStoreGUI extends JFrame {
 		contentPane.setLayout(null);
 
 		Color_Input = new JTextField();
+		Color_Input.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		Color_Input.setText("");
 		Color_Input.setBounds(27, 55, 116, 37);
 		contentPane.add(Color_Input);
 		Color_Input.setColumns(10);
 
 		Size_Input = new JTextField();
+		Size_Input.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		Size_Input.setText("");
 		Size_Input.setBounds(155, 55, 116, 37);
 		contentPane.add(Size_Input);
 		Size_Input.setColumns(10);
 
 		Price_Input = new JTextField();
+		Price_Input.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		Price_Input.setText("");
 		Price_Input.setBounds(283, 55, 116, 37);
 		contentPane.add(Price_Input);
@@ -74,10 +77,12 @@ public class BikeStoreGUI extends JFrame {
 		contentPane.add(scrollPane);
 
 		JTextArea CykelLista = new JTextArea();
+		CykelLista.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		CykelLista.setText(BikeStore.getAllBikes());
 		scrollPane.setViewportView(CykelLista);
 
 		JTextArea txtrCyklar_1 = new JTextArea();
+		txtrCyklar_1.setFont(new Font("Monospaced", Font.PLAIN, 24));
 		txtrCyklar_1.setText("Cyklar!");
 		scrollPane.setColumnHeaderView(txtrCyklar_1);
 
