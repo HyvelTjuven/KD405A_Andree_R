@@ -102,6 +102,7 @@ public class BikeStoreGUI extends JFrame {
 		contentPane.add(lblPris);
 
 		JButton btnLggTillCykel = new JButton("L\u00E4gg till cykel");
+		btnLggTillCykel.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnLggTillCykel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int convertSize = Integer.parseInt(Size_Input.getText());
