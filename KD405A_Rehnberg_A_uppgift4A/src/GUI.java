@@ -112,8 +112,8 @@ public class GUI extends JFrame {
 				if (dogNameField.getText().equals("")){
 					errorTextArea.setText("The dog must have a name");
 				} else {
-					Dog dog1 = new Dog(dogNameField.getText());
-					human.buyDog(dog1);
+					Dog dog = new Dog(dogNameField.getText());
+					human.buyDog(dog);
 				}
 			} 
 		});
