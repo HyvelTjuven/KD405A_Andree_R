@@ -54,18 +54,18 @@ public class DigitalClockGUI extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 327, 305);
 		contentPane = new JPanel();
-		contentPane.setBackground(new Color(240, 240, 240));
+		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
 		JLabel lblHour = new JLabel("Hour:");
-		lblHour.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblHour.setFont(new Font("Arial", Font.PLAIN, 20));
 		lblHour.setBounds(12, 172, 58, 29);
 		contentPane.add(lblHour);
 
 		JLabel lblMinute = new JLabel("Minute:");
-		lblMinute.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblMinute.setFont(new Font("Arial", Font.PLAIN, 20));
 		lblMinute.setBounds(146, 172, 67, 29);
 		contentPane.add(lblMinute);
 
@@ -83,21 +83,15 @@ public class DigitalClockGUI extends JFrame {
 
 		lblCurrentTime = new JLabel("00:00:00");
 		lblCurrentTime.setHorizontalAlignment(SwingConstants.CENTER);
-		lblCurrentTime.setFont(new Font("Tahoma", Font.PLAIN, 40));
-		lblCurrentTime.setBounds(76, 49, 160, 72);
+		lblCurrentTime.setFont(new Font("Arial", Font.PLAIN, 40));
+		lblCurrentTime.setBounds(0, 49, 309, 72);
 		contentPane.add(lblCurrentTime);
 
 		lblAlarmTime = new JLabel("No alarm set!");
 		lblAlarmTime.setHorizontalAlignment(SwingConstants.CENTER);
-		lblAlarmTime.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblAlarmTime.setFont(new Font("Arial", Font.PLAIN, 18));
 		lblAlarmTime.setBounds(76, 119, 160, 40);
 		contentPane.add(lblAlarmTime);
-
-		JLabel lblCurrentTime_1 = new JLabel("Current time:");
-		lblCurrentTime_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblCurrentTime_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblCurrentTime_1.setBounds(76, 30, 160, 29);
-		contentPane.add(lblCurrentTime_1);
 		
 		JButton btnSetAlarm = new JButton("Set alarm");
 		btnSetAlarm.addActionListener(new ActionListener() {
@@ -114,11 +108,12 @@ public class DigitalClockGUI extends JFrame {
 				}
 			}
 		});
-		btnSetAlarm.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		btnSetAlarm.setFont(new Font("Arial", Font.PLAIN, 13));
 		btnSetAlarm.setBounds(12, 214, 137, 30);
 		contentPane.add(btnSetAlarm);
 		
 		JButton btnClearAlarm = new JButton("Clear alarm");
+		btnClearAlarm.setFont(new Font("Arial", Font.PLAIN, 13));
 		btnClearAlarm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clockLogic.clearAlarm();
@@ -142,7 +137,7 @@ public class DigitalClockGUI extends JFrame {
 			contentPane.setBackground(new Color(255, 150, 150));
 		} else {
 			System.out.println("inget alarm");
-			contentPane.setBackground(new Color(240, 240, 255));
+			contentPane.setBackground(new Color(255, 255, 255));
 		}
 	}
 }
