@@ -33,11 +33,14 @@ public class GUI extends JFrame {
 	private JTextField searchField;
 	private JTextArea searchResults;
 	private JTextField departField;
-	private JTextField arriveField;
+	private JTextField destinationField;
 	private JTextArea travelResults;
 	private String searchURL;
 	private Journeys journeys;
 	private DecimalFormat correctTime;
+	private ArrayList<Station> stringToDepartStation;
+	private ArrayList<Station> stringToDestinationStation;
+	
 
 	/**
 	 * Launch the application.
@@ -60,7 +63,7 @@ public class GUI extends JFrame {
 	 */
 	public GUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 746, 412);
+		setBounds(100, 100, 580, 412);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -78,18 +81,19 @@ public class GUI extends JFrame {
 		searchField.setColumns(10);
 
 		JLabel lblHllplatsnamn = new JLabel("H\u00E5llplatsnamn:");
-		lblHllplatsnamn.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblHllplatsnamn.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
 		lblHllplatsnamn.setBounds(12, 249, 153, 30);
 		panel.add(lblHllplatsnamn);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(177, 249, 525, 93);
+		scrollPane.setBounds(177, 249, 363, 93);
 		panel.add(scrollPane);
 
 		searchResults = new JTextArea();
 		scrollPane.setViewportView(searchResults);
 
 		JButton searchButton = new JButton("S\u00F6k h\u00E5llplats");
+		searchButton.setFont(new Font("Comic Sans MS", Font.PLAIN, 13));
 		searchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				searchResults.setText("Hämtar stationer...");
@@ -106,24 +110,24 @@ public class GUI extends JFrame {
 		panel.add(departField);
 		departField.setColumns(10);
 
-		arriveField = new JTextField();
-		arriveField.setText("");
-		arriveField.setBounds(12, 168, 153, 22);
-		panel.add(arriveField);
-		arriveField.setColumns(10);
+		destinationField = new JTextField();
+		destinationField.setText("");
+		destinationField.setBounds(12, 168, 153, 22);
+		panel.add(destinationField);
+		destinationField.setColumns(10);
 
 		JLabel lblFrn = new JLabel("Fr\u00E5n:");
-		lblFrn.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblFrn.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
 		lblFrn.setBounds(12, 95, 153, 22);
 		panel.add(lblFrn);
 
 		JLabel lblTill = new JLabel("Till:");
-		lblTill.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblTill.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
 		lblTill.setBounds(12, 146, 153, 22);
 		panel.add(lblTill);
 
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(177, 117, 525, 108);
+		scrollPane_1.setBounds(177, 117, 363, 108);
 		panel.add(scrollPane_1);
 
 		travelResults = new JTextArea();
@@ -133,10 +137,11 @@ public class GUI extends JFrame {
 		correctTime = new DecimalFormat("00");
 
 		JButton btnSkResa = new JButton("S\u00F6k resa");
+		btnSkResa.setFont(new Font("Comic Sans MS", Font.PLAIN, 13));
 		btnSkResa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				travelResults.setText("Hämtar resor...");
-				
+
 				new travelThread().start();
 			}
 		});
@@ -144,39 +149,53 @@ public class GUI extends JFrame {
 		panel.add(btnSkResa);
 
 		JLabel lblShittyResplanerare = new JLabel("Shitty resplanerare");
-		lblShittyResplanerare.setFont(new Font("Tahoma", Font.PLAIN, 36));
+		lblShittyResplanerare.setFont(new Font("Comic Sans MS", Font.PLAIN, 36));
 		lblShittyResplanerare.setForeground(Color.RED);
 		lblShittyResplanerare.setHorizontalAlignment(SwingConstants.CENTER);
-		lblShittyResplanerare.setBounds(12, 16, 694, 66);
+		lblShittyResplanerare.setBounds(12, 16, 528, 66);
 		panel.add(lblShittyResplanerare);
 	}
 
 	private class stationThread extends Thread {
+		
 		@Override
 		public void run() {
+			
 			ArrayList<Station> searchStations = new ArrayList<Station>();
 			searchStations.addAll(Parser.getStationsFromURL(searchField.getText()));
 			searchResults.setText("");
+			
 			for (Station s : searchStations) {
 				searchResults.append(s.getStationName() + " number: " + s.getStationNbr() + "\n");
 			}
 		}
 	}
-	
-	private class travelThread extends Thread{
+
+	private class travelThread extends Thread {
+		
 		@Override
-		public void run(){
+		public void run() {
+			stringToDepartStation = new ArrayList<>();
+			stringToDestinationStation = new ArrayList<>();
 			
-			searchURL = Constants.getURL(departField.getText(), arriveField.getText(), 20);
+			/* Då XSDn (adressen) till Skånetrafikens API inte kan ta emot mellanrum måste man byta ut dessa mot 
+			 * "%20" för att kunna söka på stationer vars namn innehåller flera ord */
+			String departFormat = departField.getText().replaceAll(" ", "%20");
+			String destinationFormat = destinationField.getText().replaceAll(" ", "%20");
+			
+			stringToDepartStation.addAll(Parser.getStationsFromURL(departFormat));
+			stringToDestinationStation.addAll(Parser.getStationsFromURL(destinationFormat));
+			
+			searchURL = Constants.getURL(stringToDepartStation.get(0).getStationNbr(), stringToDestinationStation.get(0).getStationNbr(), 20);
 			journeys = Parser.getJourneys(searchURL);
 			travelResults.setText("");
-			
+
 			for (Journey journey : journeys.getJourneys()) {
 				travelResults.append(" " + journey.getStartStation() + " - " + journey.getEndStation());
 				String time = correctTime.format(journey.getDepDateTime().get(Calendar.HOUR_OF_DAY)) + ":"
 						+ correctTime.format(journey.getDepDateTime().get(Calendar.MINUTE));
-				travelResults.append("\tDeparts " + time + ", that is in " + journey.getTimeToDeparture()
-						+ " minutes and it is " + journey.getDepTimeDeviation() + " min late\n");
+				travelResults.append("\n Avgår " + time + ", alltså om " + journey.getTimeToDeparture()
+						+ " minuter och är " + journey.getDepTimeDeviation() + " minuter sen.\n\n");
 			}
 		}
 	}
